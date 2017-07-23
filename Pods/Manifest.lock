@@ -19,6 +19,7 @@ PODS:
   - GoogleToolboxForMac/Defines (2.1.1)
   - GoogleToolboxForMac/NSData+zlib (2.1.1):
     - GoogleToolboxForMac/Defines (= 2.1.1)
+  - Instructions (1.0.0)
   - ObjectMapper (2.2.7)
   - openweathermap-swift-sdk (0.1.0):
     - Alamofire (~> 4.4)
@@ -28,6 +29,7 @@ DEPENDENCIES:
   - Alamofire (~> 4.4)
   - Firebase/Core
   - Firebase/Database
+  - Instructions (~> 1.0.0)
   - openweathermap-swift-sdk
 
 SPEC CHECKSUMS:
@@ -38,9 +40,10 @@ SPEC CHECKSUMS:
   FirebaseDatabase: d829b3a8c3e2ac7a16773c5df226966b0805dfc2
   FirebaseInstanceID: 9fbf536668f4d3f0880e7438456dabd1376e294b
   GoogleToolboxForMac: 8e329f1b599f2512c6b10676d45736bcc2cbbeb0
+  Instructions: 11b6744e572b8cab6f61e9445403cb95fcde68f1
   ObjectMapper: 65abcfd9a61cf7396cbd14a4fb22fddfcc46577e
   openweathermap-swift-sdk: a3d43005ee6ed0e11c9ec62f9f5f4d737d42545e
 
-PODFILE CHECKSUM: 69eb7d9bd83479530c7089308a7c0b5d4f5e0ba7
+PODFILE CHECKSUM: 1acd4fef8a73cabcb4049a838644412dd35700d4
 
 COCOAPODS: 1.2.1

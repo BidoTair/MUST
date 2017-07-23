@@ -13,9 +13,10 @@ import Alamofire
 import CoreLocation
 import CoreMotion
 import FirebaseDatabase
+import Instructions
 
 
-class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate, CLLocationManagerDelegate {
+class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate, CLLocationManagerDelegate, CoachMarksControllerDataSource, CoachMarksControllerDelegate {
 
    
     @IBOutlet weak var mapButton: UIButton!
@@ -91,7 +92,9 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
     
     let urlString = "https://api.waqi.info/feed/geo:"
     let token = "/?token=7dc7a1ceb5b6b67d3f125128d6fda6e584badff8"
-    let interString = "http://api.geonames.org/findNearestIntersectionOSMJSON?lat=";
+    let interString = "http://api.geonames.org/findNearestIntersectionOSMJSON?lat="
+    
+    let coachMarksController = CoachMarksController()
     
     let pinch = UIPinchGestureRecognizer()
     
@@ -102,6 +105,7 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
     var aqiToggle: Bool = true
     var showViews: Bool = true
     var filterToggle:Bool = true
+    var pointOfInterst = UIView()
     
     
     let locationManager = CLLocationManager()
@@ -125,12 +129,13 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
         humButton.imageView?.contentMode = .scaleAspectFit
         airButton.imageView?.contentMode = .scaleAspectFit
         mapButton.imageView?.contentMode = .scaleAspectFit
+        pointOfInterst = smallRight
         camButton.imageView?.contentMode = .scaleAspectFit
         
         setupViews()
         
 
-
+        self.coachMarksController.dataSource = self
         
         self.locationManager.requestAlwaysAuthorization()
         self.locationManager.requestWhenInUseAuthorization()
@@ -192,7 +197,38 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
     }
     
 
+    func numberOfCoachMarks(for coachMarksController: CoachMarksController) -> Int {
+        return 2
+    }
     
+    
+    func coachMarksController(_ coachMarksController: CoachMarksController, coachMarkAt index: Int) -> CoachMark {
+        
+        switch(index) {
+        case 0:
+            return coachMarksController.helper.makeCoachMark(for: pointOfInterst)
+        case 1:
+           return coachMarksController.helper.makeCoachMark(for: pointOfInterst)
+         default: break
+        }
+       return CoachMark()
+    }
+    
+    func coachMarksController(_ coachMarksController: CoachMarksController, coachMarkViewsAt index: Int, madeFrom coachMark: CoachMark) -> (bodyView: CoachMarkBodyView, arrowView: CoachMarkArrowView?) {
+        let coachViews = coachMarksController.helper.makeDefaultCoachViews(withArrow: true, arrowOrientation: coachMark.arrowOrientation)
+        
+        switch(index) {
+        case 0:
+            coachViews.bodyView.hintLabel.text = "Pinch inwards to hide the clouds!"
+            coachViews.bodyView.nextLabel.text = "Ok!"
+            
+        case 1:
+            coachViews.bodyView.hintLabel.text = "Pinch Outwards to show the clouds!"
+            coachViews.bodyView.nextLabel.text = "Ok!"
+         default: break
+        }
+        return (bodyView: coachViews.bodyView, arrowView: coachViews.arrowView)
+    }
     
     func setupViews() {
         smallLeft.layer.cornerRadius = 25
@@ -446,7 +482,7 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
         var locations: [CLLocation] = [CLLocation]()
         
         
-        if (self.firebaseLatLong.count > 3) {
+        if (self.firebaseLatLong.count > 0) {
             self.FirebaseFailed = false
         }
         else{
@@ -836,6 +872,7 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
                 self.firebaseHums.append(Int(Double(hum)!))
                 self.firebaseTemps.append(Double(temp)!)
                 self.firebaseAqis.append((Double(aqi))!)
+                self.onDraw()
             }
             else {
             
@@ -843,13 +880,12 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
                     let objectLat = String(format: "%.3f", Double(object.lat)!)
                     let objectLong = String(format: "%.3f", Double(object.long)!)
                 
-                    print(objectLat)
+                
                 
                 
                     let tupLat = String(format: "%.3f", Double(lat)!)
                     let tupLong = String(format: "%.3f", Double(long)!)
                 
-                    print(tupLat)
                 
                     if (objectLat == tupLat && objectLong == tupLong) {
                     moveOn = true
@@ -875,7 +911,7 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
           }
         })
         
-        self.onDraw()
+       
         
         
         self.street = []
@@ -919,7 +955,6 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
     override func viewWillAppear(_ animated: Bool) {
        self.navigationController?.navigationBar.isHidden = true
        AppUtility.lockOrientation(.landscapeRight, andRotateTo: .landscapeRight)
-        
         var locationTimer = Timer.scheduledTimer(timeInterval: 180.0, target: self, selector: Selector("updateLocation"), userInfo: nil, repeats: true)
     }
     
@@ -933,6 +968,12 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        self.coachMarksController.start(on: self)
     }
 
     // -------------------------------------------------------------------------------------------------------------------------
