@@ -1,0 +1,6 @@
+framework module Pods_Arapp {
+  umbrella header "Pods-Arapp-umbrella.h"
+
+  export *
+  module * { export * }
+}
