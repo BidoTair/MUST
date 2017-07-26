@@ -55,6 +55,11 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
     @IBOutlet weak var hum4: UILabel!
     @IBOutlet weak var temp4: UILabel!
     @IBOutlet weak var filterView: UIView!
+    @IBOutlet weak var aqi2: UILabel!
+    @IBOutlet weak var aqi1: UILabel!
+    @IBOutlet weak var aqi3: UILabel!
+    @IBOutlet weak var aqi4: UILabel!
+    @IBOutlet weak var center: UILabel!
     
     var currentTemp = 0.0
     var currentAQI = 0.0
@@ -67,6 +72,9 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
     var humBigLeft = 0
     var humSmallRight = 0
     var humBigRight = 0
+    
+    var alertnum = 0
+    var coachmarksnum = 0
     
     var firebaseTemps: [Double] = [Double]()
     var firebaseHums: [Int] = [Int]()
@@ -106,6 +114,7 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
     var showViews: Bool = true
     var filterToggle:Bool = true
     var pointOfInterst = UIView()
+    var secondPOI = UIView()
     
     
     let locationManager = CLLocationManager()
@@ -130,11 +139,12 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
         airButton.imageView?.contentMode = .scaleAspectFit
         mapButton.imageView?.contentMode = .scaleAspectFit
         pointOfInterst = smallRight
+        secondPOI = centerView
         camButton.imageView?.contentMode = .scaleAspectFit
         
         setupViews()
-        
-
+        let image = UIImage(named: "cam shaded")
+        camButton.setImage(image, for: .highlighted)
         self.coachMarksController.dataSource = self
         
         self.locationManager.requestAlwaysAuthorization()
@@ -198,7 +208,11 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
     
 
     func numberOfCoachMarks(for coachMarksController: CoachMarksController) -> Int {
-        return 2
+        if (coachmarksnum < 1) {
+           coachmarksnum += 1
+           return 3
+        }
+        return 0
     }
     
     
@@ -209,7 +223,10 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
             return coachMarksController.helper.makeCoachMark(for: pointOfInterst)
         case 1:
            return coachMarksController.helper.makeCoachMark(for: pointOfInterst)
+        case 2:
+            return coachMarksController.helper.makeCoachMark(for: secondPOI)
          default: break
+        
         }
        return CoachMark()
     }
@@ -224,6 +241,9 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
             
         case 1:
             coachViews.bodyView.hintLabel.text = "Pinch Outwards to show the clouds!"
+            coachViews.bodyView.nextLabel.text = "Ok!"
+        case 2:
+            coachViews.bodyView.hintLabel.text = "Press on one of the clouds to expand it!"
             coachViews.bodyView.nextLabel.text = "Ok!"
          default: break
         }
@@ -309,8 +329,10 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
                
                 self.currentTemp = (weatherData?.main?.temp)!
                 self.currentHum = (weatherData?.main?.humidity)!
-                self.tempLabel.text = "Temp: " + String(format: "%.0f °C", self.currentTemp)
-                self.humidityLabel.text = "Hum: " + String("\(self.currentHum) %")
+                self.tempLabel.text = String(format: "%.0f °C", self.currentTemp)
+                self.humidityLabel.text = String("\(self.currentHum) %")
+                self.tempLabel.textAlignment = .center
+                self.humidityLabel.textAlignment = .center
             }
         }
     }
@@ -377,19 +399,22 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
     
                 if (number == 1) {
                     self.aqiSmallLeft = aqi
+                    self.aqi1.text = "AQI: " + String(format: "%.0f", self.aqiSmallLeft)
                 }
                     
                 else if (number == 2) {
                     self.aqiBigLeft = aqi
-                    
+                    self.aqi2.text = "AQI: " + String(format: "%.0f", self.aqiBigLeft)
                 }
                     
                 else if (number == 3) {
                     self.aqiBigRight = aqi
+                    self.aqi3.text = "AQI: " + String(format: "%.0f", self.aqiBigRight)
                     
                 }
                 else if (number == 4) {
                    self.aqiSmallRight = aqi
+                   self.aqi4.text = "AQI: " + String(format: "%.0f", self.aqiSmallRight)
               }
           }
        })
@@ -691,10 +716,11 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
                     self.tempBigLeft =  self.firebaseTemps[index2]
                     self.humBigLeft = self.firebaseHums[index2]
                     self.aqiBigLeft = self.firebaseAqis[index2]
-
+                    
                     getSteetIntersection(latitude: self.firebaseLatLong[index2].lat, longitude: self.firebaseLatLong[index2].long, number: 2)
-                    temp2.text = "Temp:" + String(format: "%.0f °C",  tempBigLeft)
+                    temp2.text = "Temp: " + String(format: "%.0f °C",  tempBigLeft)
                     hum2.text = "Hum: " + String("\(humBigLeft) %")
+                    aqi2.text = "AQI: " + String(format: "%.0f", aqiBigLeft)
                 }
                 else {
                     self.bigLeft.alpha = 0
@@ -707,8 +733,9 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
                     self.humSmallLeft = self.firebaseHums[index1]
                     self.aqiSmallLeft = self.firebaseAqis[index1]
                     getSteetIntersection(latitude: self.firebaseLatLong[index1].lat, longitude: self.firebaseLatLong[index1].long, number: 1)
-                    temp1.text = "Temp:" + String(format: "%.0f °C",  tempSmallLeft)
+                    temp1.text = "Temp: " + String(format: "%.0f °C",  tempSmallLeft)
                     hum1.text = "Hum: " + String("\(humSmallLeft) %")
+                    aqi1.text = "AQI: " + String(format: "%.0f", aqiSmallLeft)
                 }
                 else {
                     self.smallLeft.alpha = 0
@@ -721,8 +748,9 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
                     self.humBigRight = self.firebaseHums[index3]
                     self.aqiBigRight = self.firebaseAqis[index3]
                     getSteetIntersection(latitude: self.firebaseLatLong[index3].lat, longitude: self.firebaseLatLong[index3].long, number: 3)
-                    temp3.text = "Temp:" + String(format: "%.0f °C",  tempBigRight)
+                    temp3.text = "Temp: " + String(format: "%.0f °C",  tempBigRight)
                     hum3.text = "Hum: " + String("\(humBigRight) %")
+                    aqi3.text = "AQI: " + String(format: "%.0f", aqiBigRight)
                 }
                 else {
                     self.bigRight.alpha = 0
@@ -736,13 +764,35 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
                     self.humSmallRight = self.firebaseHums[index4]
                     self.aqiSmallRight = self.firebaseAqis[index4]
                    getSteetIntersection(latitude: self.firebaseLatLong[index4].lat, longitude: self.firebaseLatLong[index4].long, number: 4)
-                    temp4.text = "Temp:" + String(format: "%.0f °C", tempSmallRight)
+                    temp4.text = "Temp: " + String(format: "%.0f °C", tempSmallRight)
                     hum4.text = "Hum: " + String("\(humSmallRight) %")
+                    aqi4.text = "AQI: " + String(format: "%.0f", aqiSmallRight)
                 }
                 else {
                     self.smallRight.alpha = 0
                     self.smallRight.isHidden = true
                 }
+                
+                if (street2.text == street1.text) {
+                    self.smallLeft.alpha = 0
+                    self.smallLeft.isHidden = true
+                }
+                
+                if (street2.text == street4.text) {
+                    self.smallRight.alpha = 0
+                    self.smallRight.isHidden = true
+                }
+                if (street3.text == street1.text) {
+                    self.smallLeft.alpha = 0
+                    self.smallLeft.isHidden = true
+                }
+                
+                if (street3.text == street4.text) {
+                    self.smallRight.alpha = 0
+                    self.smallRight.isHidden = true
+                }
+
+                
             }
             
 
@@ -950,6 +1000,8 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
         }
     }
     
+    //MARK: NSCoding
+    
  // -------------------------------------------------------------------------------------------------------------------------
 
     override func viewWillAppear(_ animated: Bool) {
@@ -1012,6 +1064,17 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
             })
         }
         
+        if (alertnum < 1) {
+        
+        let alert = UIAlertController(title: "Hello!", message: "The picture has been saved to your camera roll", preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "Awesome!", style: UIAlertActionStyle.default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+        alertnum += 1
+        }
+        else {
+            
+        }
+        
         
         
     }
@@ -1020,9 +1083,16 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
     @IBAction func airButtonPressed(_ sender: Any) {
         if (aqiToggle) {
             // do stuff here
+            changetextcolors(toggle: false)
             aqiToggle = !aqiToggle
+            humToggle = true
+            tempToggle = true
             let image = UIImage(named: "aqi shaded")
             airButton.setImage(image, for: .normal)
+            let tempim = UIImage(named: "temp")
+            let humimage = UIImage(named: "hum")
+            tempButton.setImage(tempim, for: .normal)
+            humButton.setImage(humimage, for: .normal)
             self.filterView.alpha = 0.5
             self.filterView.backgroundColor = UIColor(red: 67/255, green: 67/255, blue: 67/255, alpha: 0.5)
             filterToggle = false
@@ -1098,15 +1168,62 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
     
     }
     
+    func changetextcolors(toggle: Bool) {
+        if (toggle) {
+            self.street1.textColor = UIColor(red: 255/255, green: 131/255, blue: 110/255, alpha: 1)
+            self.street2.textColor = UIColor(red: 255/255, green: 131/255, blue: 110/255, alpha: 1)
+            self.street3.textColor = UIColor(red: 255/255, green: 131/255, blue: 110/255, alpha: 1)
+            self.street4.textColor = UIColor(red: 255/255, green: 131/255, blue: 110/255, alpha: 1)
+            self.hum1.textColor = UIColor(red: 255/255, green: 131/255, blue: 110/255, alpha: 1)
+            self.hum2.textColor = UIColor(red: 255/255, green: 131/255, blue: 110/255, alpha: 1)
+            self.hum3.textColor = UIColor(red: 255/255, green: 131/255, blue: 110/255, alpha: 1)
+            self.hum4.textColor = UIColor(red: 255/255, green: 131/255, blue: 110/255, alpha: 1)
+            self.temp1.textColor = UIColor(red: 255/255, green: 131/255, blue: 110/255, alpha: 1)
+            self.temp2.textColor = UIColor(red: 255/255, green: 131/255, blue: 110/255, alpha: 1)
+            self.temp3.textColor = UIColor(red: 255/255, green: 131/255, blue: 110/255, alpha: 1)
+            self.temp4.textColor = UIColor(red: 255/255, green: 131/255, blue: 110/255, alpha: 1)
+            self.aqi1.textColor = UIColor(red: 255/255, green: 131/255, blue: 110/255, alpha: 1)
+            self.aqi2.textColor = UIColor(red: 255/255, green: 131/255, blue: 110/255, alpha: 1)
+            self.aqi3.textColor = UIColor(red: 255/255, green: 131/255, blue: 110/255, alpha: 1)
+            self.aqi4.textColor = UIColor(red: 255/255, green: 131/255, blue: 110/255, alpha: 1)
+        }
+        else {
+                self.street1.textColor = UIColor.white
+                self.street2.textColor =  UIColor.white
+                self.street3.textColor = UIColor.white
+                self.street4.textColor = UIColor.white
+                self.hum1.textColor = UIColor.white
+                self.hum2.textColor = UIColor.white
+                self.hum3.textColor = UIColor.white
+                self.hum4.textColor = UIColor.white
+                self.temp1.textColor = UIColor.white
+                self.temp2.textColor = UIColor.white
+                self.temp3.textColor = UIColor.white
+                self.temp4.textColor = UIColor.white
+                self.aqi1.textColor = UIColor.white
+                self.aqi2.textColor = UIColor.white
+                self.aqi3.textColor = UIColor.white
+                self.aqi4.textColor = UIColor.white
+        }
+        
+    }
+    
     @IBAction func humButtonPressed(_ sender: Any) {
         if (humToggle) {
             // do stuff here
             humToggle = !humToggle
+            aqiToggle = true
+            tempToggle = true
             let image = UIImage(named: "hum shaded")
+            let tempimage = UIImage(named: "temp")
+            let aqiimage = UIImage(named: "aqi")
+            tempButton.setImage(tempimage, for: .normal)
+            airButton.setImage(aqiimage, for: .normal)
             humButton.setImage(image, for: .normal)
             self.filterView.alpha = 0.5
             self.filterView.backgroundColor = UIColor(red: 0/255, green: 155/255, blue: 255/255, alpha: 0.5)
             filterToggle = false
+            changetextcolors(toggle: true)
             // dealWithView(value: tempSmallLeft, num: 1, state: 1)
             
             if (currentHum == humSmallLeft) {
@@ -1166,6 +1283,7 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
         }
         else {
             // go back
+            changetextcolors(toggle: false)
             filterToggle = true
             self.filterView.alpha = 0
             hideLabels(toggle: false)
@@ -1196,10 +1314,17 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
         
         if (tempToggle) {
             // do stuff here
+            changetextcolors(toggle: false)
             tempToggle = !tempToggle
+            humToggle = true
+            aqiToggle = true
             let im = UIImage(named: "temp shaded")
+            let humimage = UIImage(named: "hum")
+            let aqiimage = UIImage(named: "aqi")
             tempButton.setImage(im, for: .normal)
-            self.filterView.alpha = 0.5
+            airButton.setImage(aqiimage, for: .normal)
+            humButton.setImage(humimage, for: .normal)
+                      self.filterView.alpha = 0.5
             self.filterView.backgroundColor = UIColor(red: 255/255, green: 105/255, blue: 0/255, alpha: 0.5)
             filterToggle = false
             
@@ -1214,7 +1339,7 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
                 
                 let greenNum = (105 - difference)
                 
-                self.smallLeft.backgroundColor = UIColor(red: 255/255, green: CGFloat(greenNum/255), blue: 0/255, alpha: 0.7)
+                self.smallLeft.backgroundColor = UIColor(red: 255/255, green: CGFloat(greenNum/255), blue: 0/255, alpha: 0.5)
                 
             }
             
@@ -1227,7 +1352,7 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
                 
                 let greenNum = (105 - difference)
                 
-                self.bigLeft.backgroundColor = UIColor(red: 255/255, green: CGFloat(greenNum/255), blue: 0/255, alpha: 0.7)
+                self.bigLeft.backgroundColor = UIColor(red: 255/255, green: CGFloat(greenNum/255), blue: 0/255, alpha: 0.5)
                 
             }
             
@@ -1240,7 +1365,7 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
                 
                 let greenNum = (105 - difference)
                 
-                self.bigRight.backgroundColor = UIColor(red: 255/255, green: CGFloat(greenNum/255), blue: 0/255, alpha: 0.7)
+                self.bigRight.backgroundColor = UIColor(red: 255/255, green: CGFloat(greenNum/255), blue: 0/255, alpha: 0.5)
                 
             }
             
@@ -1252,7 +1377,7 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
                 
                 let greenNum = (105 - difference)
                 
-                self.smallRight .backgroundColor = UIColor(red: 255/255, green: CGFloat(greenNum/255), blue: 0/255, alpha: 0.7)
+                self.smallRight .backgroundColor = UIColor(red: 255/255, green: CGFloat(greenNum/255), blue: 0/255, alpha: 0.5)
                 
             }
             
@@ -1263,7 +1388,6 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
             filterToggle = true
             self.filterView.alpha = 0
             hideLabels(toggle: false)
-            self.imageView.image = nil
             tempToggle = !tempToggle
              let image = UIImage(named: "temp")
             tempButton.setImage(image, for: .normal)
@@ -1292,6 +1416,7 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
             self.centerStreet.text = self.street2.text!
             self.centerHum.text = self.hum2.text!
             self.centerTemp.text = self.temp2.text!
+             self.center.text = self.aqi2.text!
             })
       
     }
@@ -1315,6 +1440,7 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
             self.centerStreet.text = self.street3.text!
             self.centerHum.text = self.hum3.text!
             self.centerTemp.text = self.temp3.text!
+             self.center.text = self.aqi3.text!
             
         })
         
@@ -1340,6 +1466,7 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
             self.centerStreet.text = self.street1.text!
             self.centerHum.text = self.hum1.text!
             self.centerTemp.text = self.temp1.text!
+             self.center.text = self.aqi1.text!
         })
     }
     
@@ -1378,6 +1505,7 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
             self.centerStreet.text = self.street4.text!
             self.centerHum.text = self.hum4.text!
             self.centerTemp.text = self.temp4.text!
+            self.center.text = self.aqi4.text!
             
         })
         
