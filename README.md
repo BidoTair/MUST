@@ -27,9 +27,6 @@ No Filter                  |  Temperature Filter       |  Humidity Filter
 * [Worldwide Air Quality](http://aqicn.org/api/) - AQI data
 * [GeoNames](http://www.geonames.org/export/web-services.html) - Street Intersections
 
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
 
 
 ## Authors
