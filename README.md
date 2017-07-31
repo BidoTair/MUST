@@ -1,90 +1,45 @@
 # MUST
 
-One Paragraph of project description goes here
+Mobile Urban Sensing Technologies (MUST), is a mobile App developed by the Augmented Reality (AR) environmental visualization group based at Princeton University. The app enables the user to navigate the city being informed by the spatio-temporal gradients of temperature, humidity, and air quality data. Data has been compiled from the available weather station networks as well as from the MUST sensing kits which are spread out over different cities. This is the first version of our app so please feel free to give us some feedback on how we can improve it.
 
-## Getting Started
-
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
+iOS 9.0+
+Only Works on iPhone
 
-```
-Give examples
-```
 
 ### Installing
 
-A step by step series of examples that tell you have to get a development env running
+Currently there is only an iOS version of our app with an Android version coming soon.
 
-Say what the step will be
+AppleStore: 
 
-```
-Give the example
-```
 
-And repeat
+## Screenshots
+No Filter                  |  Temperature Filter       |  Humidity Filter
+:-------------------------:|:-------------------------:|:-------------------------:
+![](http://i.imgur.com/Lf0gHx7.jpg) |  ![](http://i.imgur.com/xgWI86z.jpg) | ![](http://i.imgur.com/vbh7FVT.jpg)
 
-```
-until finished
-```
+## APIs Used
 
-End with an example of getting some data out of the system or using it for a little demo
-
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
-
-## Built With
-
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+* [OpenWeatherMap](https://openweathermap.org/current) - Humidity and Temperature Data
+* [Worldwide Air Quality](http://aqicn.org/api/) - AQI data
+* [GeoNames](http://www.geonames.org/export/web-services.html) - Street Intersections
 
 ## Contributing
 
 Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
 
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
 
 ## Authors
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+* **Abdulghafar Al Tair** - [Github Profile](https://github.com/BidoTair) 
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-* Hat tip to anyone who's code was used
-* Inspiration
-* etc
+This project is licensed under Princeton University's license
 
 
 
