@@ -21,7 +21,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>1.0.1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -32,9 +32,9 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Apply filters</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Access to user&apos;s location</string>
+	<string>Allows us to determine current location environmental data and that of areas around you.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Access to user&apos;s location</string>
+	<string>Allows us to determine current location environmental data and that of areas around you.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Access to photo library</string>
 	<key>UILaunchStoryboardName</key>

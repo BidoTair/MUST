@@ -895,8 +895,8 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
         
         ref = Database.database().reference()
         
-        // fix query
-        databaseHandle = ref.child("SeoulTest01").child("data").queryLimited(toFirst: 50).observe(.childAdded, with:{ (snapshot) in
+
+        databaseHandle = ref.child("SeoulTest01").child("data").queryLimited(toLast: 50).observe(.childAdded, with:{ (snapshot) in
             // code to execute when child is added
             let postDict = snapshot.value as! [String : AnyObject]
             let lat = postDict["gpsdatalat"] as! String
@@ -905,9 +905,8 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
             let longShortened = String(format: "%.2f", Double(long)!)
             
             let mylatShorteneed = String(format: "%.2f", (temp?.latitude)!)
-           // let mylongShortened = String(format: "%.2f", (temp?.longitude)!)
-            let mylongShortened = "-74.65" // fix this
-
+            let mylongShortened = String(format: "%.2f", (temp?.longitude)!)
+           
             
             var moveOn: Bool = false
             
