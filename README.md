@@ -13,7 +13,7 @@ Only Works on iPhone
 
 Currently there is only an iOS version of our app with an Android version coming soon.
 
-AppleStore: 
+AppleStore: https://itunes.apple.com/us/app/must-mobile-urban-sensing-technologies/id1264014726?mt=8
 
 
 ## Screenshots
