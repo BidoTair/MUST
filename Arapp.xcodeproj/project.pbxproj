@@ -15,10 +15,10 @@
 		0B730E1D1EDBEE9400519BF7 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B730E1C1EDBEE9400519BF7 /* Helper.swift */; };
 		0B730E201EDCD97A00519BF7 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B730E1E1EDCD97A00519BF7 /* WebViewController.swift */; };
 		0B730E211EDCD97A00519BF7 /* WebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B730E1F1EDCD97A00519BF7 /* WebViewController.xib */; };
+		0B7366BF1F54CD2D001F8984 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0B7366BE1F54CD2D001F8984 /* Images.xcassets */; };
 		0BA278491EFDE96000A3FD60 /* Overlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA278481EFDE96000A3FD60 /* Overlay.swift */; };
 		0BCCA75A1EA71CF000820606 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BCCA7591EA71CF000820606 /* AppDelegate.swift */; };
 		0BCCA75C1EA71CF000820606 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BCCA75B1EA71CF000820606 /* ViewController.swift */; };
-		0BCCA7611EA71CF000820606 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0BCCA7601EA71CF000820606 /* Assets.xcassets */; };
 		0BCCA7641EA71CF000820606 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0BCCA7621EA71CF000820606 /* LaunchScreen.storyboard */; };
 		0BCCA7701EA71E7100820606 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BCCA76E1EA71E7100820606 /* MainViewController.swift */; };
 		0BCCA7711EA71E7100820606 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0BCCA76F1EA71E7100820606 /* MainViewController.xib */; };
@@ -38,11 +38,11 @@
 		0B730E1C1EDBEE9400519BF7 /* Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		0B730E1E1EDCD97A00519BF7 /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		0B730E1F1EDCD97A00519BF7 /* WebViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WebViewController.xib; sourceTree = "<group>"; };
+		0B7366BE1F54CD2D001F8984 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		0BA278481EFDE96000A3FD60 /* Overlay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Overlay.swift; sourceTree = "<group>"; };
 		0BCCA7561EA71CF000820606 /* Arapp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Arapp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0BCCA7591EA71CF000820606 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0BCCA75B1EA71CF000820606 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		0BCCA7601EA71CF000820606 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0BCCA7631EA71CF000820606 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0BCCA7651EA71CF000820606 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0BCCA76E1EA71E7100820606 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -101,6 +101,7 @@
 		0BCCA74D1EA71CF000820606 = {
 			isa = PBXGroup;
 			children = (
+				0B7366BE1F54CD2D001F8984 /* Images.xcassets */,
 				0BA278481EFDE96000A3FD60 /* Overlay.swift */,
 				0BFDED981EFDDB68006CAC50 /* MyStyleKit.swift */,
 				0B730E221EDCD98400519BF7 /* Webview */,
@@ -126,7 +127,6 @@
 			children = (
 				0BCCA7591EA71CF000820606 /* AppDelegate.swift */,
 				0BCCA75B1EA71CF000820606 /* ViewController.swift */,
-				0BCCA7601EA71CF000820606 /* Assets.xcassets */,
 				0BCCA7621EA71CF000820606 /* LaunchScreen.storyboard */,
 				0BCCA7651EA71CF000820606 /* Info.plist */,
 				0B1BFF6D1F086AE100D343F6 /* GoogleService-Info.plist */,
@@ -223,8 +223,8 @@
 			files = (
 				0BCCA7641EA71CF000820606 /* LaunchScreen.storyboard in Resources */,
 				0BCCA7711EA71E7100820606 /* MainViewController.xib in Resources */,
-				0BCCA7611EA71CF000820606 /* Assets.xcassets in Resources */,
 				0B730E211EDCD97A00519BF7 /* WebViewController.xib in Resources */,
+				0B7366BF1F54CD2D001F8984 /* Images.xcassets in Resources */,
 				0B6DA8C11EB3018A009303A6 /* MapViewController.xib in Resources */,
 				0B1BFF6F1F086AFD00D343F6 /* GoogleService-Info.plist in Resources */,
 			);

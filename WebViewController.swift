@@ -15,7 +15,7 @@ class WebViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.isHidden = false
-        let url = URL(string: "http://must.princeton.edu")
+        let url = URL(string: "https://must.princeton.edu/Map.html")
         webview.loadRequest(URLRequest(url: url!))
 
         // Do any additional setup after loading the view.

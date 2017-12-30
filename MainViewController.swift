@@ -151,13 +151,28 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
         self.locationManager.requestWhenInUseAuthorization()
         locationManager.delegate = self
         
-        if CLLocationManager.locationServicesEnabled() {
-            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
-            locationManager.startUpdatingLocation()
-            locationManager.startUpdatingHeading()
-            locationManager.headingOrientation = .landscapeLeft
-            locationManager.headingFilter = CLLocationDegrees(10)
-        }
+//        let authorizationStatus = CLLocationManager.authorizationStatus()
+//        switch authorizationStatus {
+//        case .notDetermined:
+//            self.locationManager.requestWhenInUseAuthorization()
+//            break
+//        case .authorizedAlways:
+//            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+//            locationManager.startUpdatingLocation()
+//            locationManager.startUpdatingHeading()
+//            locationManager.headingOrientation = .landscapeLeft
+//            locationManager.headingFilter = CLLocationDegrees(10)
+//        case .authorizedWhenInUse:
+//            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+//            locationManager.startUpdatingLocation()
+//            locationManager.startUpdatingHeading()
+//            locationManager.headingOrientation = .landscapeLeft
+//            locationManager.headingFilter = CLLocationDegrees(10)
+//            
+//        default: break
+//        }
+        
+        
         
       //  setupButtons() // calls method to make buttons circular
         setupPinch()
@@ -206,7 +221,27 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
         // Do any additional setup after loading the view.
     }
     
+    
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        if status == CLAuthorizationStatus.authorizedAlways {
+            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+            locationManager.startUpdatingLocation()
+            locationManager.startUpdatingHeading()
+            locationManager.headingOrientation = .landscapeLeft
+            locationManager.headingFilter = CLLocationDegrees(10)
 
+        }
+        if status == CLAuthorizationStatus.authorizedWhenInUse {
+            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+            locationManager.startUpdatingLocation()
+            locationManager.startUpdatingHeading()
+            locationManager.headingOrientation = .landscapeLeft
+            locationManager.headingFilter = CLLocationDegrees(10)
+        }
+        if status == CLAuthorizationStatus.denied {
+            self.locationManager.requestWhenInUseAuthorization()
+        }
+    }
     func numberOfCoachMarks(for coachMarksController: CoachMarksController) -> Int {
         if (coachmarksnum < 1) {
            coachmarksnum += 1
@@ -819,7 +854,6 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
                 
                 let street = (street1Arr?[0])! + " and " + (street2Arr?[0])!
                 
-                print(street)
                 
                 if (number == 1) {
                   self.street1.text = street
@@ -875,6 +909,11 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
+        if (manager.location == nil) {
+            
+        }
+        
+        else {
         
         lastLocation = manager.location!
         let temp = manager.location?.coordinate
@@ -896,7 +935,7 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
         ref = Database.database().reference()
         
 
-        databaseHandle = ref.child("SeoulTest01").child("data").queryLimited(toLast: 50).observe(.childAdded, with:{ (snapshot) in
+        databaseHandle = ref.child("SeoulTest01").child("data").queryLimited(toLast: 1000).observe(.childAdded, with:{ (snapshot) in
             // code to execute when child is added
             let postDict = snapshot.value as! [String : AnyObject]
             let lat = postDict["gpsdatalat"] as! String
@@ -904,9 +943,23 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
             let latShortened = String(format: "%.2f", Double(lat)!)
             let longShortened = String(format: "%.2f", Double(long)!)
             
+            let timeStamp = postDict["ts"] as! String
+            let timeStamparr = timeStamp.components(separatedBy: "-")
+            let todayarr = timeStamparr[2].components(separatedBy: "T")
+            let today = todayarr[0]
+            
+            let date = Date()
+            let formatter = DateFormatter()
+            
+            formatter.dateFormat = "dd"
+            
+            let result = formatter.string(from: date)
+            
+            
             let mylatShorteneed = String(format: "%.2f", (temp?.latitude)!)
             let mylongShortened = String(format: "%.2f", (temp?.longitude)!)
            
+            if (result == today) {
             
             var moveOn: Bool = false
             
@@ -953,11 +1006,12 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
               let aqi =  postDict["AQI"] as! String
               self.firebaseAqis.append((Double(aqi))!)
               self.firebaseHums.append(Int(Double(hum)!))
-               self.firebaseTemps.append(Double(temp)!)
+              self.firebaseTemps.append(Double(temp)!)
               }
                 
             }
           }
+            }
         })
         
        
@@ -968,6 +1022,7 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
         self.firebaseLatLong = [mytuple]()
         self.firebaseTemps = [Double]()
         self.firebaseHums = [Int]()
+        }
 
       
     }
@@ -1098,7 +1153,11 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
             
             
             if (currentAQI == aqiSmallLeft) {
-                self.smallLeft.alpha = 0.0
+                let difference = (aqiSmallLeft - currentAQI)*20
+                
+                let greenNum = (155 - difference)
+                self.smallLeft.backgroundColor = UIColor(white: CGFloat(greenNum/255), alpha: 0.7)
+
             }
                 
             else  {
@@ -1112,8 +1171,12 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
             
             
             if (currentAQI == aqiBigLeft) {
-                self.bigLeft.alpha = 0.0
-            }
+                let difference = (aqiBigLeft - currentAQI)*20
+                
+                let greenNum = (155 - difference)
+                
+                
+                self.bigLeft.backgroundColor = UIColor(white: CGFloat(greenNum/255), alpha: 0.7)            }
                 
             else  {
                 
@@ -1126,7 +1189,11 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
             }
             
             if (currentAQI == aqiSmallRight) {
-                self.smallRight.alpha = 0.0
+                let difference = (aqiSmallRight - currentAQI)*20
+                
+                let greenNum = (155 - difference)
+                
+                self.smallRight.backgroundColor = UIColor(white: CGFloat(greenNum/255), alpha: 0.7)
             }
                 
             else  {
@@ -1139,7 +1206,11 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
             }
             
             if (currentAQI == aqiBigRight) {
-                self.bigRight.alpha = 0.0
+                let difference = (aqiBigRight - currentAQI)*20
+                
+                let greenNum = (155 - difference)
+                
+                self.bigRight.backgroundColor = UIColor(white: CGFloat(greenNum/255), alpha: 0.7)
             }
                 
             else  {
@@ -1226,8 +1297,10 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
             // dealWithView(value: tempSmallLeft, num: 1, state: 1)
             
             if (currentHum == humSmallLeft) {
-                self.smallLeft.alpha = 0.0
-            }
+                let difference = (humSmallLeft - currentHum)*20
+                
+                let greenNum = (155 - difference)
+                self.smallLeft.backgroundColor = UIColor(red: 0/255, green: CGFloat(greenNum/255), blue: 255/255, alpha: 0.7)            }
                 
             else  {
                 
@@ -1240,8 +1313,11 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
             
             
             if (currentHum == humBigLeft) {
-                self.bigLeft.alpha = 0.0
-            }
+                let difference = (humBigLeft - currentHum)*20
+                
+                let greenNum = (155 - difference)
+                
+                self.bigLeft.backgroundColor = UIColor(red: 0/255, green: CGFloat(greenNum/255), blue: 255/255, alpha: 0.7)            }
                 
             else  {
                 
@@ -1253,7 +1329,11 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
             }
             
             if (currentHum == humSmallRight) {
-                self.smallRight.alpha = 0.0
+                let difference = (humSmallRight - currentHum)*20
+                
+                let greenNum = (155 - difference)
+                
+                self.smallRight.backgroundColor = UIColor(red: 0/255, green: CGFloat(greenNum/255), blue: 255/255, alpha: 0.7)
             }
                 
             else  {
@@ -1266,7 +1346,11 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
             }
             
             if (currentHum == humBigRight) {
-                self.bigRight.alpha = 0.0
+                let difference = (humBigRight - currentHum)*20
+                
+                let greenNum = (155 - difference)
+                
+                self.bigRight.backgroundColor = UIColor(red: 0/255, green: CGFloat(greenNum/255), blue: 255/255, alpha: 0.7)
             }
             
             else  {
@@ -1330,7 +1414,11 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
            // dealWithView(value: tempSmallLeft, num: 1, state: 1)
 //            
             if (currentTemp == tempSmallLeft) {
-                self.smallLeft.alpha = 0.0
+                let difference = (tempSmallLeft - currentTemp)*20
+                
+                let greenNum = (105 - difference)
+                
+                self.smallLeft.backgroundColor = UIColor(red: 255/255, green: CGFloat(greenNum/255), blue: 0/255, alpha: 0.5)
             }
             
             else {
@@ -1343,7 +1431,11 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
             }
             
             if (currentTemp == tempBigLeft) {
-                self.bigLeft.alpha = 0
+                let difference = (tempBigLeft - currentTemp)*20
+                
+                let greenNum = (105 - difference)
+                
+                self.bigLeft.backgroundColor = UIColor(red: 255/255, green: CGFloat(greenNum/255), blue: 0/255, alpha: 0.5)
             }
             
             else {
@@ -1356,7 +1448,11 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
             }
             
             if (currentTemp == tempBigRight) {
-                self.bigRight.alpha = 0
+                let difference = (tempBigRight - currentTemp)*20
+                
+                let greenNum = (105 - difference)
+                
+                self.bigRight.backgroundColor = UIColor(red: 255/255, green: CGFloat(greenNum/255), blue: 0/255, alpha: 0.5)
             }
                 
             else {
@@ -1369,7 +1465,11 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
             }
             
             if (currentTemp == tempSmallRight) {
-                self.smallRight.alpha = 0
+                let difference = (tempSmallRight - currentTemp)*20
+                
+                let greenNum = (105 - difference)
+                
+                self.smallRight .backgroundColor = UIColor(red: 255/255, green: CGFloat(greenNum/255), blue: 0/255, alpha: 0.5)
             }
             else {
                 let difference = (tempSmallRight - currentTemp)*20
