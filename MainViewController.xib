@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12118" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="landscape">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MainViewController" customModule="Arapp" customModuleProvider="target">
             <connections>
+                <outlet property="ARScenceView" destination="qHM-1w-dY0" id="qYD-oP-pct"/>
                 <outlet property="airButton" destination="eqU-oo-g7u" id="kGR-RW-OLO"/>
                 <outlet property="aqi1" destination="ceX-eL-3gx" id="gdw-ok-s2J"/>
                 <outlet property="aqi2" destination="KZN-vp-qZh" id="d1Q-VB-78Y"/>
@@ -58,6 +60,9 @@
             <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
+                <arskView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qHM-1w-dY0">
+                    <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
+                </arskView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H99-D0-7AE">
                     <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -418,6 +423,7 @@
                 <constraint firstItem="RM5-Ns-aV1" firstAttribute="leading" secondItem="lZi-J4-2Vf" secondAttribute="trailing" constant="20" id="7MZ-Yb-YmG"/>
                 <constraint firstItem="oEu-MZ-8my" firstAttribute="top" secondItem="Y27-id-ORu" secondAttribute="top" id="9aF-Zf-3G7"/>
                 <constraint firstItem="GPc-jg-WNK" firstAttribute="centerY" secondItem="Y27-id-ORu" secondAttribute="centerY" id="AgZ-Kj-d0R"/>
+                <constraint firstItem="qHM-1w-dY0" firstAttribute="leading" secondItem="HNN-lu-yMB" secondAttribute="trailing" constant="-194" id="Bmz-lZ-N6W"/>
                 <constraint firstItem="wWR-0F-Xmp" firstAttribute="top" secondItem="Y27-id-ORu" secondAttribute="top" constant="12" id="C26-1m-zAZ"/>
                 <constraint firstItem="FYo-rZ-Vkc" firstAttribute="leading" secondItem="Y27-id-ORu" secondAttribute="leading" id="Dju-4V-eTZ"/>
                 <constraint firstAttribute="trailing" secondItem="7mQ-Ae-Lhg" secondAttribute="trailing" constant="59.329999999999998" id="FKP-kS-eEU"/>
@@ -428,6 +434,7 @@
                 <constraint firstItem="HNN-lu-yMB" firstAttribute="leading" secondItem="Y27-id-ORu" secondAttribute="leading" constant="51" id="JtK-um-RYs"/>
                 <constraint firstItem="GPc-jg-WNK" firstAttribute="centerX" secondItem="Y27-id-ORu" secondAttribute="centerX" id="LZ6-QY-xo6"/>
                 <constraint firstItem="Laj-lq-vXd" firstAttribute="leading" secondItem="wWR-0F-Xmp" secondAttribute="trailing" constant="85.5" id="Mgr-8F-WGq"/>
+                <constraint firstItem="qHM-1w-dY0" firstAttribute="top" secondItem="ur1-tQ-qNb" secondAttribute="bottom" constant="-100" id="Mih-pV-Jgz"/>
                 <constraint firstItem="HNN-lu-yMB" firstAttribute="centerY" secondItem="Y27-id-ORu" secondAttribute="centerY" constant="-44" id="NKd-9W-z0B"/>
                 <constraint firstItem="h3z-Jf-pjl" firstAttribute="centerY" secondItem="Y27-id-ORu" secondAttribute="centerY" constant="78" id="Pd4-6N-7wV"/>
                 <constraint firstItem="ur1-tQ-qNb" firstAttribute="leading" secondItem="eqU-oo-g7u" secondAttribute="trailing" constant="20" id="Ptq-4c-Ys9"/>
@@ -449,11 +456,13 @@
                 <constraint firstAttribute="trailing" secondItem="oEu-MZ-8my" secondAttribute="trailing" id="qee-XJ-WbV"/>
                 <constraint firstItem="qMp-5r-0OR" firstAttribute="leading" secondItem="wWR-0F-Xmp" secondAttribute="trailing" constant="155" id="r6d-Mt-3Ns"/>
                 <constraint firstAttribute="trailing" secondItem="Uff-uW-Fcv" secondAttribute="trailing" constant="83.329999999999998" id="rFl-N4-oxL"/>
+                <constraint firstAttribute="trailing" secondItem="qHM-1w-dY0" secondAttribute="trailing" id="rjB-4s-I0D"/>
                 <constraint firstItem="7mQ-Ae-Lhg" firstAttribute="centerY" secondItem="Y27-id-ORu" secondAttribute="centerY" constant="78" id="tLn-rS-utD"/>
                 <constraint firstItem="oEu-MZ-8my" firstAttribute="leading" secondItem="Y27-id-ORu" secondAttribute="leading" id="wvO-Vj-9Pt"/>
+                <constraint firstAttribute="bottom" secondItem="qHM-1w-dY0" secondAttribute="bottom" id="yny-aJ-jZk"/>
                 <constraint firstItem="h3z-Jf-pjl" firstAttribute="leading" secondItem="Y27-id-ORu" secondAttribute="leading" constant="20" id="zRt-xY-aRf"/>
             </constraints>
-            <point key="canvasLocation" x="166" y="350"/>
+            <point key="canvasLocation" x="165.5" y="349.5"/>
         </view>
     </objects>
     <resources>

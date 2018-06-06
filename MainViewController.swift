@@ -14,6 +14,7 @@ import CoreLocation
 import CoreMotion
 import FirebaseDatabase
 import Instructions
+import ARKit
 
 
 class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate, CLLocationManagerDelegate, CoachMarksControllerDataSource, CoachMarksControllerDelegate {
@@ -29,6 +30,8 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
     @IBOutlet weak var tempLabel: UILabel!
     @IBOutlet weak var humidityLabel: UILabel!
     @IBOutlet weak var aqiLabel: UILabel!
+   
+    @IBOutlet weak var ARScenceView: ARSKView!
     
     @IBOutlet weak var street1: UILabel! // street label in small left
     @IBOutlet weak var hum1: UILabel! // hum label in small left
@@ -178,7 +181,7 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
         setupPinch()
         
         
-        
+        /*
         let devices = AVCaptureDevice.devices(withMediaType: AVMediaTypeVideo)
         
         for device in devices! {
@@ -217,6 +220,7 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
                 }
             }
         }
+ */
 
         // Do any additional setup after loading the view.
     }
@@ -286,6 +290,27 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
     }
     
     func setupViews() {
+        
+        let rect = SKShapeNode(rectOf: CGSize(width: 143, height: 71), cornerRadius: 25)
+        rect.fillColor = SKColor.blue
+        rect.position = CGPoint(x: 440.5, y: 108)
+        
+        let nameNode = SKLabelNode(text: "Name")
+        nameNode.fontSize = 10
+        nameNode.fontColor = UIColor.black
+        
+        rect.addChild(nameNode)
+        var scene = SKScene(size: CGSize(width: 200, height: 200))
+        scene.backgroundColor = UIColor.clear
+        scene.addChild(rect)
+        
+        ARScenceView.scene?.addChild(rect)
+        
+       
+      
+        
+        
+        
         smallLeft.layer.cornerRadius = 25
         smallRight.layer.cornerRadius = 25
         bigLeft.layer.cornerRadius = 25
@@ -1059,6 +1084,12 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
  // -------------------------------------------------------------------------------------------------------------------------
 
     override func viewWillAppear(_ animated: Bool) {
+        // conifguring ARscence
+        super.viewWillAppear(animated)
+        let configuration = ARWorldTrackingConfiguration()
+        ARScenceView.session.run(configuration)
+        
+        
        self.navigationController?.navigationBar.isHidden = true
        AppUtility.lockOrientation(.landscapeRight, andRotateTo: .landscapeRight)
         var locationTimer = Timer.scheduledTimer(timeInterval: 180.0, target: self, selector: Selector("updateLocation"), userInfo: nil, repeats: true)
@@ -1066,7 +1097,8 @@ class MainViewController: UIViewController, AVCaptureVideoDataOutputSampleBuffer
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        
+        // stop ARScene
+        ARScenceView.session.pause()
         // Don't forget to reset when view is being removed
         AppUtility.lockOrientation(.all)
     }

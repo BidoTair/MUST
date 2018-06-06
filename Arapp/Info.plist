@@ -30,7 +30,7 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>Apply filters</string>
+	<string>For Augmented Reality</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Allows us to determine current location environmental data and that of areas around you.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
