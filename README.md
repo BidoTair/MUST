@@ -1,6 +1,6 @@
-# MUST
+# NUE
 
-Mobile Urban Sensing Technologies (MUST), is a mobile App developed by the Augmented Reality (AR) environmental visualization group based at Princeton University. The app enables the user to navigate the city being informed by the spatio-temporal gradients of temperature, humidity, and air quality data. Data has been compiled from the available weather station networks as well as from the MUST sensing kits which are spread out over different cities. This is the first version of our app so please feel free to give us some feedback on how we can improve it.
+Navigating Urban Environments, is a mobile App developed by the Augmented Reality (AR) environmental visualization group based at Princeton University. The app enables the user to navigate the city being informed by the spatio-temporal gradients of temperature, humidity, and air quality data. Data has been compiled from the available weather station networks as well as from the MUST sensing kits which are spread out over different cities. This is the first version of our app so please feel free to give us some feedback on how we can improve it.
 
 
 ### Prerequisites
